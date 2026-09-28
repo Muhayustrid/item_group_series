@@ -5,6 +5,8 @@ app_description = "Automatically select Item naming series based on Item Group i
 app_email = "114971841+Muhayustrid@users.noreply.github.com"
 app_license = "mit"
 
+required_apps = ["erpnext"]
+
 # Includes in <head>
 # ------------------
 

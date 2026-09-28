@@ -11,7 +11,19 @@ class TestItemGroupSeries(IntegrationTestCase):
 		item.item_group = "Bahan Baku"
 		item.stock_uom = "Nos"
 		set_naming_series(item)
-		self.assertEqual(item.naming_series, "BB.YY..####.")
+		expected = frappe.db.get_value("Item Group", "Bahan Baku", "custom_naming_series")
+		self.assertEqual(item.naming_series, expected)
+
+	def test_field_default_series_is_replaced_by_group_series(self):
+		# On insert, _set_defaults prefills naming_series with the field's static
+		# default; the hook must treat that as "not chosen" and apply the group series.
+		field_default = frappe.get_meta("Item").get_field("naming_series").default or ""
+		item = frappe.new_doc("Item")
+		item.item_group = "Bahan Baku"
+		item.naming_series = field_default
+		set_naming_series(item)
+		expected = frappe.db.get_value("Item Group", "Bahan Baku", "custom_naming_series")
+		self.assertEqual(item.naming_series, expected)
 
 	def test_fallback_naming_series_for_unset_group(self):
 		group_name = "_Test Group No Series"
