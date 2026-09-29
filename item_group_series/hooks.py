@@ -40,3 +40,7 @@ fixtures = [
 # ---------
 after_migrate = "item_group_series.patches.v1_0.seed_item_group_series.execute"
 
+# install-app on Frappe Cloud does not run migrate; seed right after the
+# app's fixtures (the custom field) are synced instead.
+after_sync = "item_group_series.patches.v1_0.seed_item_group_series.execute"
+
